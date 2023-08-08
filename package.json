@@ -50,6 +50,9 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
+  "dependencies": {
+    "moment": "^2.29.4"
+  },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.2.2",
