@@ -15,15 +15,13 @@ jobs:
         with:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
-      - name: Update Version
-        run: npm version patch # Or minor/major depending on the update
-
       - name: Commit and Push Version Update
         run: |
           git config user.name "BhavaniMM"
           git config user.email "bhavani.masali@softsuave.org"
           git commit -m "Update package version"
-          git push
+      - name: Update Version
+        run: npm version patch # Or minor/major depending on the update
 
       - name: Publish package on NPM 📦
         run: npm publish

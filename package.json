@@ -1,6 +1,6 @@
 {
   "name": "react-native-section-list",
-  "version": "0.1.0",
+  "version": "1.0.4",
   "description": "The react-native-section-list package is a library for React Native applications that simplifies the rendering and handling of lists. It provides a customizable component, SectionList, which allows you to display and iterate through a list of items, along with optional heading and item rendering functionalities.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
