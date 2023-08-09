@@ -22,7 +22,7 @@ jobs:
         run: |
           git config user.name "BhavaniMM"
           git config user.email "bhavani.masali@softsuave.org"
-          git commit -am "Update package version"
+          git commit -m "Update package version"
           git push
 
       - name: Publish package on NPM 📦
