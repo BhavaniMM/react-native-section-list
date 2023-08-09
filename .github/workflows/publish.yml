@@ -23,10 +23,7 @@ jobs:
 
       - name: Update Version
         run: npm version patch # Or minor/major depending on the update
-      - name: commit and push
-        run: |
-          git commit -m "updated version"
-          git push
+ 
 
       - name: Publish package on NPM 📦
         run: npm publish
