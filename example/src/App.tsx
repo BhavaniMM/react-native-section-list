@@ -1,31 +1,35 @@
 import * as React from 'react';
-
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-section-list';
+import { StyleSheet, Text, SafeAreaView } from 'react-native';
+import SectionList from 'react-native-section-list';
+import { COLORSDATA } from './COLORSDATA';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <SectionList
+        JSON_KEY={'color'}
+        isDate={true}
+        containerStyle={styles.container}
+        childContainerStyle={undefined}
+        data={COLORSDATA}
+        renderHeading={(title) => (
+          <Text style={styles.colorHeader}>{title}</Text>
+        )}
+        renderItem={({ item, index }: { item: any; index?: number }) => (
+          <Text key={index}>{JSON.stringify(item)}</Text>
+        )}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  colorHeader: {
+    padding: 10,
+    fontSize: 32,
   },
 });
