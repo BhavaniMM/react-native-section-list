@@ -10,22 +10,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
-          registry-url: 'https://registry.npmjs.org'
-      - name: change name and email
-        run: |
-          git config user.name "BhavaniMM"
-          git config user.email "bhavani.masali@softsuave.org"
-        
+          registry-url: https://registry.npmjs.org/
 
-      - name: Update Version
-        run: npm version patch # Or minor/major depending on the update
- 
+      # - name: Authenticate with NPM
+      #   run: npm login --registry=https://registry.npmjs.org --scope=bhavani-m --always-auth
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Install bob
+        run: npx react-native-builder-bob@latest init
 
       - name: Publish package on NPM 📦
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
