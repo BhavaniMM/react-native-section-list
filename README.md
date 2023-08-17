@@ -28,13 +28,13 @@ import SectionList from 'react-native-section-list';
 
 ```jsx
  <SectionList
-        JSON_KEY={'color'}
+        jsonKey={'color'}
         isDate={true}
-        containerStyle={{...}}
-        childContainerStyle={{...}}
-        data={data}
+        containerStyle={styles.container}
+        childContainerStyle={undefined}
+        data={DATA}
         renderHeading={(title) => (
-          <Text>{title}</Text>
+          <Text style={styles.headerText}>{title}</Text>
         )}
         renderItem={({ item, index }: { item: any; index?: number }) => (
           <Text key={index}>{JSON.stringify(item)}</Text>
