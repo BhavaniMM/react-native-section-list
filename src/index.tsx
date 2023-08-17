@@ -8,9 +8,10 @@ import {
 import type { ListRenderItem } from '@react-native/virtualized-lists';
 import { modifySectionList } from './utils';
 import SectionedListData from './SectionedListData';
+import { Text } from 'react-native';
 
 interface Props extends FlatListProps<any> {
-  JSON_KEY: string | undefined;
+  jsonKey: string | undefined;
   isDate?: boolean;
   childContainerStyle?: ViewStyle;
   containerStyle?: ViewStyle;
@@ -21,7 +22,7 @@ interface Props extends FlatListProps<any> {
 
 function SectionList(props: Props) {
   const {
-    JSON_KEY,
+    jsonKey,
     isDate = false,
     renderHeading,
     containerStyle,
@@ -29,25 +30,29 @@ function SectionList(props: Props) {
     renderItem,
     data,
   } = props;
-  const sectionListData = modifySectionList(data, JSON_KEY, isDate);
+  const sectionListData: any = modifySectionList(data, jsonKey, isDate);
 
   return (
     <SafeAreaView style={containerStyle}>
-      <FlatList
-        {...props}
-        data={sectionListData}
-        renderItem={({ item }) => (
-          <SectionedListData
-            colorData={item}
-            renderItem={renderItem}
-            renderHeading={renderHeading}
-            colorListContainerStyle={childContainerStyle}
-          />
-        )}
-        keyExtractor={
-          props.keyExtractor || ((_item, index) => index.toString())
-        }
-      />
+      {sectionListData?.length > 0 ? (
+        <FlatList
+          {...props}
+          data={sectionListData}
+          renderItem={({ item }) => (
+            <SectionedListData
+              listData={item}
+              renderItem={renderItem}
+              renderHeading={renderHeading}
+              listContainerStyle={childContainerStyle}
+            />
+          )}
+          keyExtractor={
+            props.keyExtractor || ((_item, index) => index.toString())
+          }
+        />
+      ) : (
+        <Text>No Data Found</Text>
+      )}
     </SafeAreaView>
   );
 }

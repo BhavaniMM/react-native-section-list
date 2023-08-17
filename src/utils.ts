@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { type colorDataType, type sortedColorDataType } from './interface';
 
 export const modifySectionList = (
   Json_data: Array<any> | null | undefined,
@@ -7,66 +6,66 @@ export const modifySectionList = (
   isDate?: boolean
 ) => {
   const dateFormat = 'MMM DD YYYY h:mm:ss A';
+  let keyName: any = null;
 
   if (!Json_data) return null;
 
   const isValue = !Json_data[0]?.hasOwnProperty(JSON_KEY);
+  const keysArray = Object.keys(Json_data[0]);
 
   const filteredList = isValue
-    ? Json_data?.filter(
-        (item) => item.color === JSON_KEY || item.value === JSON_KEY
+    ? Json_data?.filter((item) =>
+        keysArray.some(
+          (keyVal) => item[keyVal]?.toLowerCase() === JSON_KEY?.toLowerCase()
+        )
       )
     : Json_data;
 
-  const groupedColors: sortedColorDataType[] = filteredList.reduce(
-    (result: sortedColorDataType[], obj: any) => {
-      const colorKeyValue: any =
-        (isValue
-          ? (Object.keys(obj) as (keyof colorDataType)[]).find(
-              (key) => obj[key] === JSON_KEY
-            )
-          : JSON_KEY) || JSON_KEY;
-
-      const existingColor: any = result?.find(
-        (item: sortedColorDataType) => item.color === obj[colorKeyValue]
-      );
-
-      if (!existingColor) {
-        const colorObj: any = {
-          color: obj[colorKeyValue],
-          values: [obj],
-        };
-        if (isDate) colorObj.date = obj?.date;
-        result.push(colorObj);
-      } else {
-        existingColor?.values.push(obj);
-
-        if (
-          moment(obj.date, dateFormat).isBefore(
-            moment(existingColor.date, dateFormat)
-          )
+  const groupedData: any[] = filteredList.reduce((result: any[], obj: any) => {
+    keyName = isValue
+      ? Object.keys(obj).find(
+          (key) => obj[key]?.toLowerCase() === JSON_KEY?.toLowerCase()
         )
-          existingColor.date = obj?.date;
-      }
+      : JSON_KEY;
 
-      return result;
-    },
-    []
-  );
+    const existedData: any = result?.find(
+      (item: any) => item.keyName?.toLowerCase() === obj[keyName]?.toLowerCase()
+    );
+
+    if (!existedData) {
+      const dataObj: any = {
+        keyName: obj[keyName],
+        values: [obj],
+      };
+      if (isDate) dataObj.date = obj?.date;
+      result.push(dataObj);
+    } else {
+      // existedData?.values.push(obj);
+
+      if (
+        moment(obj.date, dateFormat).isBefore(
+          moment(existedData.date, dateFormat)
+        )
+      ) {
+        existedData.date = obj?.date;
+        existedData?.values.unshift(obj);
+      } else {
+        existedData?.values.push(obj);
+      }
+    }
+
+    return result;
+  }, []);
 
   if (isDate) {
-    sortDateData(groupedColors);
-
-    groupedColors.forEach((groupedColor) => {
-      sortDateData(groupedColor.values);
-    });
-  } else {
-    groupedColors.sort((a, b) =>
-      a.color.toLowerCase().localeCompare(b.color.toLowerCase())
+    sortDateData(groupedData);
+  } else if (keyName) {
+    groupedData.sort((a, b) =>
+      a?.keyName?.toLowerCase().localeCompare(b?.keyName?.toLowerCase())
     );
   }
 
-  return groupedColors;
+  return groupedData;
 };
 
 const sortDateData = (data: Array<any> | null | undefined) => {

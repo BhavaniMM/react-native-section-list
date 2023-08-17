@@ -10,21 +10,21 @@ const dummySeparators = {
 };
 
 const SectionedListData = ({
-  colorData,
+  listData,
   renderHeading,
   renderItem,
-  colorListContainerStyle,
+  listContainerStyle,
 }: {
-  colorData: { color: string; values: Array<any> };
+  listData: { keyName: string; values: Array<any> };
   renderHeading: React.FC<any> | undefined;
   renderItem: ListRenderItem<any> | null | undefined;
-  colorListContainerStyle?: ViewStyle;
+  listContainerStyle?: ViewStyle;
 }) => {
   return (
-    <View style={colorListContainerStyle}>
-      {!!renderHeading && renderHeading(colorData.color)}
+    <View style={listContainerStyle}>
+      {!!renderHeading && renderHeading(listData.keyName)}
       {!!renderItem &&
-        colorData.values.map((item: any, index: number) =>
+        listData.values.map((item: any, index: number) =>
           renderItem({ item, index, separators: dummySeparators })
         )}
     </View>
