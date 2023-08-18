@@ -2,9 +2,13 @@
 
 The react-native-section-list package is a library for React Native applications that simplifies the rendering and handling of lists. It provides a customizable component, SectionList, which allows you to display and iterate through a list of items, along with optional heading and item rendering functionalities.
 
+# React Native SectionList Example
+![demo](https://github.com/BhavaniMM/react-native-section-list/assets/135315139/a92274f1-7b67-4dfc-9184-2870431bbccc)
+
+
 ## Installation
 
-Download package with npm or yarn
+Download the package with npm or yarn
 
 ```sh
 npm install react-native-section-list
@@ -14,7 +18,7 @@ npm install react-native-section-list
 yarn add react-native-section-list
 ```
 
-In order for react-native-section-list to work, you also need to install moment
+In order for react-native-section-list to work, you also need to install the moment
 
 ```sh
 npm install moment  
@@ -28,7 +32,7 @@ import SectionList from 'react-native-section-list';
 
 ```jsx
  <SectionList
-        jsonKey={'color'}
+        jsonKey={'category'}
         isDate={true}
         containerStyle={styles.container}
         childContainerStyle={undefined}
@@ -52,7 +56,7 @@ All the `FlatList` props can be passed.
 | `isDate`                    | `boolean`                        | indicates whether to sort data by date.                               |
 | `containerStyle`            | `ViewStyle`                      | Styling for the main container that holds the list.                   |                        
 | `childContainerStyle`       | `ViewStyle`                      | Additional styling for the child container that wraps                 |      
-| `renderHeading`             | `React.FC<any>`                  | renders each item in the list (Required).                             |
+| `renderHeading`             | `React.FC<any>`                  | renders each item in the list .                                       |
 | `data`                      | `Array<any>`                     | An array of data to render in the FlatList (Required)                 |
 
 ## Contributing
