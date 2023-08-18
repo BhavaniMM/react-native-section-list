@@ -2,11 +2,13 @@ import React from 'react';
 import type { ViewStyle } from 'react-native';
 import { View } from 'react-native';
 import type { ListRenderItem } from '@react-native/virtualized-lists';
+import type { DynamicObject, sectionedDataType } from 'src/types';
 
 const dummySeparators = {
-  highlight: () => {},
-  unhighlight: () => {},
-  updateProps: (_select: 'leading' | 'trailing', _newProps: any) => {},
+  highlight: () => undefined,
+  unhighlight: () => undefined,
+  updateProps: (_select: 'leading' | 'trailing', _newProps: unknown) =>
+    undefined,
 };
 
 const SectionedListData = ({
@@ -15,17 +17,19 @@ const SectionedListData = ({
   renderItem,
   listContainerStyle,
 }: {
-  listData: { keyName: string; values: Array<any> };
-  renderHeading: React.FC<any> | undefined;
-  renderItem: ListRenderItem<any> | null | undefined;
+  listData: sectionedDataType;
+  renderHeading: React.FC<string> | undefined;
+  renderItem: ListRenderItem<DynamicObject> | null | undefined;
   listContainerStyle?: ViewStyle;
 }) => {
   return (
     <View style={listContainerStyle}>
       {!!renderHeading && renderHeading(listData.keyName)}
       {!!renderItem &&
-        listData.values.map((item: any, index: number) =>
-          renderItem({ item, index, separators: dummySeparators })
+        React.Children.toArray(
+          listData.values.map((item: DynamicObject, index: number) =>
+            renderItem({ item, index, separators: dummySeparators })
+          )
         )}
     </View>
   );

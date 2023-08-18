@@ -29,7 +29,7 @@
   "scripts": {
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint": "eslint --fix src/**/*.{ts,tsx}",
     "prepack": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
@@ -87,7 +87,8 @@
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
-    "react": ">= 16.8 || 18.0.0"
+    "react": ">= 16.8 || 18.0.0",
+    "react-native":"*"
   },
   "engines": {
     "node": ">= 16.0.0"

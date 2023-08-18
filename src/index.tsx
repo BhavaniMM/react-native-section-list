@@ -9,15 +9,17 @@ import type { ListRenderItem } from '@react-native/virtualized-lists';
 import { modifySectionList } from './utils';
 import SectionedListData from './SectionedListData';
 import { Text } from 'react-native';
+import type { DynamicObject, sectionedDataType } from './types';
 
-interface Props extends FlatListProps<any> {
-  jsonKey: string | undefined;
+interface Props
+  extends Omit<FlatListProps<sectionedDataType>, 'renderItem' | 'data'> {
+  jsonKey: string;
   isDate?: boolean;
   childContainerStyle?: ViewStyle;
   containerStyle?: ViewStyle;
-  renderHeading?: React.FC<any>;
-  renderItem: ListRenderItem<any> | null | undefined;
-  data: Array<any>;
+  renderHeading?: React.FC<string>;
+  renderItem: ListRenderItem<DynamicObject> | null | undefined;
+  data: DynamicObject[];
 }
 
 function SectionList(props: Props) {
@@ -30,11 +32,15 @@ function SectionList(props: Props) {
     renderItem,
     data,
   } = props;
-  const sectionListData: any = modifySectionList(data, jsonKey, isDate);
+  const sectionListData: sectionedDataType[] | null = modifySectionList(
+    data,
+    jsonKey,
+    isDate
+  );
 
   return (
     <SafeAreaView style={containerStyle}>
-      {sectionListData?.length > 0 ? (
+      {sectionListData && sectionListData?.length > 0 ? (
         <FlatList
           {...props}
           data={sectionListData}

@@ -1,61 +1,70 @@
 import moment from 'moment';
+import type { DynamicObject, sectionedDataType } from './types';
 
 export const modifySectionList = (
-  Json_data: Array<any> | null | undefined,
-  JSON_KEY: string | undefined,
+  data: DynamicObject[] | null | undefined,
+  jsonKey: string,
   isDate?: boolean
-) => {
+): sectionedDataType[] | null => {
   const dateFormat = 'MMM DD YYYY h:mm:ss A';
-  let keyName: any = null;
+  let keyName: string | null | undefined = null;
 
-  if (!Json_data) return null;
+  if (!data) return null;
 
-  const isValue = !Json_data[0]?.hasOwnProperty(JSON_KEY);
-  const keysArray = Object.keys(Json_data[0]);
+  const isValue = jsonKey && data[0] ? !(jsonKey in data[0]) : false;
+
+  const keysArray = Object.keys(data[0] as DynamicObject);
 
   const filteredList = isValue
-    ? Json_data?.filter((item) =>
+    ? data?.filter((item) =>
         keysArray.some(
-          (keyVal) => item[keyVal]?.toLowerCase() === JSON_KEY?.toLowerCase()
+          (keyVal) => item[keyVal]?.toLowerCase() === jsonKey?.toLowerCase()
         )
       )
-    : Json_data;
+    : data;
 
-  const groupedData: any[] = filteredList.reduce((result: any[], obj: any) => {
-    keyName = isValue
-      ? Object.keys(obj).find(
-          (key) => obj[key]?.toLowerCase() === JSON_KEY?.toLowerCase()
-        )
-      : JSON_KEY;
+  const groupedData: sectionedDataType[] = filteredList.reduce(
+    (result: sectionedDataType[], obj: DynamicObject) => {
+      keyName = isValue
+        ? Object.keys(obj).find(
+            (key) => obj[key]?.toLowerCase() === jsonKey?.toLowerCase()
+          )
+        : jsonKey;
 
-    const existedData: any = result?.find(
-      (item: any) => item.keyName?.toLowerCase() === obj[keyName]?.toLowerCase()
-    );
+      const existedData = result?.find((item) => {
+        if (keyName)
+          return item.keyName?.toLowerCase() === obj[keyName]?.toLowerCase();
+        return false;
+      });
 
-    if (!existedData) {
-      const dataObj: any = {
-        keyName: obj[keyName],
-        values: [obj],
-      };
-      if (isDate) dataObj.date = obj?.date;
-      result.push(dataObj);
-    } else {
-      // existedData?.values.push(obj);
-
-      if (
-        moment(obj.date, dateFormat).isBefore(
-          moment(existedData.date, dateFormat)
-        )
-      ) {
-        existedData.date = obj?.date;
-        existedData?.values.unshift(obj);
+      if (!existedData) {
+        if (keyName) {
+          const dataObj: sectionedDataType = {
+            keyName: obj[keyName] as string,
+            values: [obj],
+          };
+          if (isDate) {
+            dataObj.date = obj.date;
+          }
+          result.push(dataObj);
+        }
       } else {
-        existedData?.values.push(obj);
+        if (
+          moment(obj.date, dateFormat).isBefore(
+            moment(existedData?.date, dateFormat)
+          )
+        ) {
+          existedData.date = obj?.date;
+          existedData?.values.unshift(obj);
+        } else {
+          existedData?.values.push(obj);
+        }
       }
-    }
 
-    return result;
-  }, []);
+      return result;
+    },
+    []
+  );
 
   if (isDate) {
     sortDateData(groupedData);
@@ -68,7 +77,7 @@ export const modifySectionList = (
   return groupedData;
 };
 
-const sortDateData = (data: Array<any> | null | undefined) => {
+const sortDateData = (data: sectionedDataType[] | null | undefined) => {
   if (!data) return;
 
   data?.sort((a, b) => {
