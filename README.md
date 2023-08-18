@@ -3,8 +3,8 @@
 The react-native-section-list package is a library for React Native applications that simplifies the rendering and handling of lists. It provides a customizable component, SectionList, which allows you to display and iterate through a list of items, along with optional heading and item rendering functionalities.
 
 # React Native SectionList Example
-![demo](https://github.com/BhavaniMM/react-native-section-list/assets/135315139/a92274f1-7b67-4dfc-9184-2870431bbccc)
 
+<img src="https://github.com/BhavaniMM/react-native-section-list/blob/refactor/demo.gif" width="360">
 
 ## Installation
 
@@ -52,7 +52,7 @@ All the `FlatList` props can be passed.
 
 | **Prop**                    | **Type**                         | **Description**                                                                                
 | --------------------------- | -------------------------------- | ----------------------------------------------------------------------|
-| `JSON_KEY`                  | `string`                         | Extracts unique identifiers from the data (Required)                  |                        
+| `jsonKey`                  | `string`                         | Extracts unique identifiers from the data (Required)                  |                        
 | `isDate`                    | `boolean`                        | indicates whether to sort data by date.                               |
 | `containerStyle`            | `ViewStyle`                      | Styling for the main container that holds the list.                   |                        
 | `childContainerStyle`       | `ViewStyle`                      | Additional styling for the child container that wraps                 |      
